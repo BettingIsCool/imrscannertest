@@ -141,7 +141,7 @@ if authentication_status:
     dataframe.insert(0, "PROCESSED", [False] * len(dataframe.index), True)
     styled_df = dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).applymap(highlight_outdated_odds, subset=['ODDS UPDATED']).applymap(highlight_outdated_ratings, subset=['RATINGS UPDATED']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format})
 
-    st.data_editor(styled_df, disabled=True)
+    st.data_editor(styled_df, column_config={"PROCESSED": st.column_config.CheckboxColumn("Your favorite?", help="Select your **favorite** widgets", default=False,)}, disabled=False)
 
    
     st.markdown("""👉 Sort rows by clicking on the column header.""")
