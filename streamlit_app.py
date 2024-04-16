@@ -8,6 +8,8 @@ import streamlit_authenticator as stauth
 from st_aggrid import AgGrid, GridUpdateMode
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 
+st.set_page_config(layout="wide")
+
 # Highlight value bet
 def highlight_cell(val):
 
