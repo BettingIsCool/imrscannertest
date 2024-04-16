@@ -142,7 +142,7 @@ if authentication_status:
     styled_df = dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).applymap(highlight_outdated_odds, subset=['ODDS UPDATED']).applymap(highlight_outdated_ratings, subset=['RATINGS UPDATED']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format})
 
     edited_dataframe = st.data_editor(styled_df, column_config={"PROCESSED": st.column_config.CheckboxColumn("PROCESSED", help="Select if you have processed this game!", default=False,)}, disabled=['EVENTID', 'STARTS', 'SPORT', 'LEAGUE', 'HOME TEAM', 'AWAY TEAM', 'HOME LINE', 'ODDS HOME', 'ODDS AWAY', 'LIMIT', 'DIFF HOME', 'DIFF AWAY', 'STAKE HOME', 'STAKE AWAY', 'ODDS UPDATED', 'RATINGS UPDATED'], hide_index=True)
-    st.write(edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True))
+    st.write(edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True)])
    
     st.markdown("""👉 Sort rows by clicking on the column header.""")
     st.markdown("""👉 Enter 'wide-mode' in the settings (top right) for a more convenient view.""")
