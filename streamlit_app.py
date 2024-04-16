@@ -128,16 +128,8 @@ if authentication_status:
     dataframe['stake_home'] = dataframe['stake_home'].astype(int)
     dataframe['stake_away'] = dataframe['stake_away'].astype(int)
     
-    #dataframe = dataframe.style.format({'line': '{:+g}'.format, 'spread_home': '{:,.3f}'.format, 'spread_away': '{:,.3f}'.format, 'spread_home_max': '{0:g}'.format, 'diff_home': '{:+.0%}'.format, 'diff_away': '{:+.0%}'.format, 'stake_home': '{}'.format, 'stake_away': '{}'.format})
-
     dataframe = dataframe.rename(columns={'event_id': 'EVENTID', 'starts': 'STARTS', 'sport_name': 'SPORT', 'league_name': 'LEAGUE', 'runner_home': 'HOME TEAM', 'runner_away': 'AWAY TEAM', 'line': 'HOME LINE', 'spread_home': 'ODDS HOME', 'spread_away': 'ODDS AWAY', 'spread_home_max': 'LIMIT', 'diff_home': 'DIFF HOME', 'diff_away': 'DIFF AWAY', 'stake_home': 'STAKE HOME', 'stake_away': 'STAKE AWAY', 'timestamp': 'ODDS UPDATED', 'ratings_updated': 'RATINGS UPDATED'})
-    # st.write(dataframe.style.background_gradient(subset=pd.IndexSlice[:, ['DIFF HOME', 'DIFF AWAY']], cmap=plt.cm.get_cmap('RdYlGn')).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format}))
-    #dataframe.insert(2, "favorite", [False] * len(dataframe.index), True)
-    
-    #st.dataframe(dataframe, column_config={"favorite": st.column_config.CheckboxColumn("Your favorite?", help="Select your **favorite** widgets", default=False,)}, disabled=["widgets"], hide_index=True,)
 
-    #st.write(dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format}))
-    
     dataframe.insert(0, "PROCESSED", [False] * len(dataframe.index), True)
     styled_df = dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).applymap(highlight_outdated_odds, subset=['ODDS UPDATED']).applymap(highlight_outdated_ratings, subset=['RATINGS UPDATED']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format})
 
