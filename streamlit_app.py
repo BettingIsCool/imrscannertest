@@ -5,6 +5,8 @@ import streamlit as st
 from datetime import datetime
 import matplotlib.pyplot as plt
 import streamlit_authenticator as stauth
+from st_aggrid import AgGrid, GridUpdateMode
+from st_aggrid.grid_options_builder import GridOptionsBuilder
 
 # Highlight value bet
 def highlight_cell(val):
@@ -118,7 +120,10 @@ if authentication_status:
   if data:
     
     dataframe = pd.DataFrame(data)
-  
+    gd = GridOptionsBuilder.from_dataframe(df)
+    gd.configure_selection(selection_mode='multiple', use_checkbox=True)
+    gridoptions = gd.build()
+ 
     dataframe['stake_home'] = dataframe['stake_home']
     dataframe['stake_away'] = dataframe['stake_away']
     dataframe['stake_home'][dataframe['stake_home'] < 0] = 0
