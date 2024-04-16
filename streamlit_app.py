@@ -137,7 +137,7 @@ if authentication_status:
     #st.dataframe(dataframe, column_config={"favorite": st.column_config.CheckboxColumn("Your favorite?", help="Select your **favorite** widgets", default=False,)}, disabled=["widgets"], hide_index=True,)
 
     #st.write(dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format}))
-    st.data_editor(dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).applymap(highlight_outdated_odds, subset=['ODDS UPDATED']).applymap(highlight_outdated_ratings, subset=['RATINGS UPDATED']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format}), num_rows=”dynamic”)
+    st.data_editor(dataframe, num_rows=”dynamic”)
 
    
     st.markdown("""👉 Sort rows by clicking on the column header.""")
