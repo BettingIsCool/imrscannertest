@@ -16,6 +16,8 @@ st.set_page_config(layout="wide")
 # Fetch all active users from database
 users = db_imr.get_users()
 
+st.write(users)
+
 
 # Create credential lists for authentication
 names = [item['name'] for item in users]
