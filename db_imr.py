@@ -32,3 +32,9 @@ def get_users():
 def get_processed_bets(username: str):
 
   return conn.query(f"SELECT event_id FROM {TABLE_BETS} WHERE username = '{username}'", ttl=600)['event_id'].tolist()
+
+
+@st.cache_data(ttl=10)
+def append_processed_bet(username: str, event_id: int):
+
+  return conn.query(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES ('{username}', {event_id})", ttl=600)
