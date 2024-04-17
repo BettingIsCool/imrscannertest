@@ -81,12 +81,12 @@ if authentication_status:
 
   
   # Fetch processed bets for each user
-  processed_bets = db_imr.get_processed_bets(username=username)
+  processed_eventids = db_imr.get_processed_bets(username=username)
   data = db_imr.get_log(sports=selected_sports, leagues=selected_leagues, min_diff=float(min_diff) / 100, min_limit=min_limit)
 
   for event in data:
     event.update({'processed': False})
-    if event['event_id'] in processed_bets:
+    if event['event_id'] in processed_eventids:
       event.update({'processed': True})
 
   
@@ -116,8 +116,12 @@ if authentication_status:
     # Convert dataframe to data_editor object to make specific columns editable for users
     edited_dataframe = st.data_editor(styled_df, column_config={"PROCESSED": st.column_config.CheckboxColumn("PROCESSED", help="Select if you have processed this game!", default=False)}, disabled=['EVENTID', 'STARTS', 'SPORT', 'LEAGUE', 'HOME TEAM', 'AWAY TEAM', 'HOME LINE', 'ODDS HOME', 'ODDS AWAY', 'LIMIT', 'DIFF HOME', 'DIFF AWAY', 'STAKE HOME', 'STAKE AWAY', 'ODDS UPDATED', 'RATINGS UPDATED'], hide_index=True)
     
-    processed_bets_new = edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True), 'EVENTID'].tolist()
-    processed_bets_old = db_imr.get_processed_bets(username=username)    
+    processed_eventids_new = edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True), 'EVENTID'].tolist()
+    processed_eventids_old = db_imr.get_processed_bets(username=username)
+
+    for event_id in processed_eventids_new:
+      if event_id not in processed_eventids_old:
+        db_imr.append_processed_bet(username=username, event_id=event_id)
    
     tools.print_advise()
   
