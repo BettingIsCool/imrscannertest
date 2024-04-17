@@ -57,7 +57,8 @@ if authentication_status:
   min_limit = st.sidebar.slider(label='Min Limit', min_value=0, max_value=10000, value=0, step=100)
   
   selected_sports = st.sidebar.multiselect(label='Sports', options=sorted(unique_sports), default=db_imr.get_sports())
-  selected_sports = f"({','.join([f"'{s}'" for s in selected_sports])})"
+  selected_sports = [f"'{s}'" for s in selected_sports]
+  selected_sports = f"({','.join(selected_sports)})"
   
   unique_leagues = db_imr.get_leagues()
   selected_leagues = st.sidebar.multiselect(label='Leagues', options=sorted(unique_leagues), default=unique_leagues)
