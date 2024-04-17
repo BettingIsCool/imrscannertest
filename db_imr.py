@@ -1,7 +1,7 @@
 import streamlit as st
 from config import TABLE_LOG, TABLE_USERS, TABLE_BETS
 
-conn = st.connection('imr', type='sql')
+conn = st.connection('imr', type='sql', autocommit = True)
 
 
 @st.cache_data(ttl=10)
