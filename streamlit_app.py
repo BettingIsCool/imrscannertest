@@ -79,11 +79,11 @@ if authentication_status:
   if st.button('Refresh data', type="primary"):
     st.cache_data.clear()
 
-  processed_bets = db_imr.get_processed_bets(username=username)
+  #processed_bets = db_imr.get_processed_bets(username=username)
   data = db_imr.get_log(sports=selected_sports, leagues=selected_leagues, min_diff=float(min_diff) / 100, min_limit=min_limit)
 
-  for d in data:
-    d.update({'processed': True}) if d['event_id'] in processed_bets else d.update({'processed': False})
+  #for d in data:
+  #  d.update({'processed': True}) if d['event_id'] in processed_bets else d.update({'processed': False})
 
   if data:
     
