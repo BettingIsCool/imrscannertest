@@ -43,6 +43,7 @@ if authentication_status is False:
 
 # Continue if authentication suceeds
 if authentication_status:
+  st.cache_data.clear()
 
   placeholder1.empty()
   placeholder2.empty()
