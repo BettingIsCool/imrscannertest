@@ -42,6 +42,5 @@ def append_processed_bet(username: str, event_id: int):
 
   with conn.session as session:
     session.execute(text(query), params = dict(username = username, event_id = event_id))
-    #session.execute('INSERT INTO imr_bets(ID, SENTENCE) VALUES(:id, :sen);', params = dict(username = username, event_id = event_id))
     session.commit()
     
