@@ -117,14 +117,14 @@ if authentication_status:
     edited_dataframe = st.data_editor(styled_df, column_config={"PROCESSED": st.column_config.CheckboxColumn("PROCESSED", help="Select if you have processed this game!", default=False)}, disabled=['EVENTID', 'STARTS', 'SPORT', 'LEAGUE', 'HOME TEAM', 'AWAY TEAM', 'HOME LINE', 'ODDS HOME', 'ODDS AWAY', 'LIMIT', 'DIFF HOME', 'DIFF AWAY', 'STAKE HOME', 'STAKE AWAY', 'ODDS UPDATED', 'RATINGS UPDATED'], hide_index=True)
     
     processed_eventids_new = edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True), 'EVENTID'].tolist()
-    processed_eventids_old = db_imr.get_processed_bets(username=username)
-
+  
     # Delete event_id in db if event is not in selected events
+    processed_eventids_old = db_imr.get_processed_bets(username=username)
     for event_id in processed_eventids_old:
       if event_id not in processed_eventids_new:
         db_imr.delete_processed_bet(username=username, event_id=event_id)
 
-    
+    # Append event_id if missing in db
     processed_eventids_old = db_imr.get_processed_bets(username=username)
     for event_id in processed_eventids_new:
       if event_id not in processed_eventids_old:
