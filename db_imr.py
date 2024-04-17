@@ -38,6 +38,6 @@ def get_processed_bets(username: str):
 def append_processed_bet(username: str, event_id: int):
 
   with conn.session as session:
-    session.execute(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES (:username, :event_id)", {'username': {username}, 'event_id': {event_id}})
+    session.execute(f"INSERT INTO {TABLE_BETS} (event_id) VALUES (:event_id);", {"event_id": event_id})
     session.commit()
     
