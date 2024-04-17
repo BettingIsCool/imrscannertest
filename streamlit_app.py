@@ -83,8 +83,9 @@ if authentication_status:
   data = db_imr.get_log(sports=selected_sports, leagues=selected_leagues, min_diff=float(min_diff) / 100, min_limit=min_limit)
 
   for event in data:
-    st.write(event)
-    event.update({'processed': True}) if event['event_id'] in processed_bets else event.update({'processed': False})
+    event.update({'processed': False})
+    if event['event_id'] in processed_bets:
+      event.update({'processed': True})
 
   if data:
     
