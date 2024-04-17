@@ -39,4 +39,4 @@ def append_processed_bet(username: str, event_id: int):
 
   st.write(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES ('{username}', {event_id})")
 
-  conn.query(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES ('{username}', {event_id})", ttl=600)
+  conn.execute(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES ('{username}', {event_id})", ttl=600)
