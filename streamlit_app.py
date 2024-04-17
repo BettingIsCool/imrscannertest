@@ -1,4 +1,5 @@
 import time
+import tools
 import db_imr
 import pandas as pd
 import streamlit as st
@@ -19,8 +20,6 @@ hashed_passwords = stauth.Hasher(passwords).generate()
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'app_home', 'auth', cookie_expiry_days=1)
 
 name, authentication_status, username = authenticator.login("Login", "sidebar")
-
-
 
 placeholder1 = st.empty()
 placeholder2 = st.empty()
@@ -94,7 +93,7 @@ if authentication_status:
     dataframe = dataframe.rename(columns={'event_id': 'EVENTID', 'starts': 'STARTS', 'sport_name': 'SPORT', 'league_name': 'LEAGUE', 'runner_home': 'HOME TEAM', 'runner_away': 'AWAY TEAM', 'line': 'HOME LINE', 'spread_home': 'ODDS HOME', 'spread_away': 'ODDS AWAY', 'spread_home_max': 'LIMIT', 'diff_home': 'DIFF HOME', 'diff_away': 'DIFF AWAY', 'stake_home': 'STAKE HOME', 'stake_away': 'STAKE AWAY', 'timestamp': 'ODDS UPDATED', 'ratings_updated': 'RATINGS UPDATED'})
 
     dataframe.insert(0, "PROCESSED", [False] * len(dataframe.index), True)
-    styled_df = dataframe.style.applymap(highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).applymap(highlight_outdated_odds, subset=['ODDS UPDATED']).applymap(highlight_outdated_ratings, subset=['RATINGS UPDATED']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format})
+    styled_df = dataframe.style.applymap(tools.highlight_cell, subset=['DIFF HOME', 'DIFF AWAY']).applymap(tools.highlight_outdated_odds, subset=['ODDS UPDATED']).applymap(tools.highlight_outdated_ratings, subset=['RATINGS UPDATED']).format({'HOME LINE': '{:+g}'.format, 'ODDS HOME': '{:,.3f}'.format, 'ODDS AWAY': '{:,.3f}'.format, 'LIMIT': '{0:g}'.format, 'DIFF HOME': '{:+.0%}'.format, 'DIFF AWAY': '{:+.0%}'.format, 'STAKE HOME': '{}'.format, 'STAKE AWAY': '{}'.format})
 
     edited_dataframe = st.data_editor(styled_df, column_config={"PROCESSED": st.column_config.CheckboxColumn("PROCESSED", help="Select if you have processed this game!", default=False,)}, disabled=['EVENTID', 'STARTS', 'SPORT', 'LEAGUE', 'HOME TEAM', 'AWAY TEAM', 'HOME LINE', 'ODDS HOME', 'ODDS AWAY', 'LIMIT', 'DIFF HOME', 'DIFF AWAY', 'STAKE HOME', 'STAKE AWAY', 'ODDS UPDATED', 'RATINGS UPDATED'], hide_index=True)
     st.write(edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True), 'EVENTID'])
