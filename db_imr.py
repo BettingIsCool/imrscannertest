@@ -1,5 +1,5 @@
 import streamlit as st
-from config import TABLE_LOG, TABLE_USERS
+from config import TABLE_LOG, TABLE_USERS, TABLE_BETS
 
 conn = st.connection('imr', type='sql')
 
@@ -26,3 +26,9 @@ def get_leagues():
 def get_users():
 
   return conn.query(f"SELECT name, username, password FROM {TABLE_USERS} WHERE active = 1", ttl=600).to_dict('records')
+
+
+@st.cache_data(ttl=10)
+def get_processed_bets(username: str):
+
+  return conn.query(f"SELECT event_id FROM {TABLE_BETS} WHERE username = '{username}'", ttl=600).tolist()
