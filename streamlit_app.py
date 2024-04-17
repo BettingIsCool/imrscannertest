@@ -12,18 +12,22 @@ from config import TEXT_LANDING_PAGE
 # Switch to wide-mode for better view
 st.set_page_config(layout="wide")
 
+
 # Fetch all active users from database
 users = db_imr.get_users()
+
 
 # Create credential lists for authentication
 names = [item['name'] for item in users]
 usernames = [item['username'] for item in users]
 passwords = [item['password'] for item in users]
 
+
 # Create hashed passwords for secure login
 hashed_passwords = stauth.Hasher(passwords).generate()
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'app_home', 'auth', cookie_expiry_days=1)
 name, authentication_status, username = authenticator.login("Login", "sidebar")
+
 
 # Place welcome text on landing page
 placeholder1 = st.empty()
@@ -31,9 +35,11 @@ placeholder2 = st.empty()
 placeholder1.title('Implied Market Ratings')
 placeholder2.markdown(TEXT_LANDING_PAGE)
 
+
 # Display text if authentication fails
 if authentication_status is False:
   st.error("Username/password incorrect or subscription expired.")
+
 
 # Continue if authentication suceeds
 if authentication_status:
@@ -41,6 +47,7 @@ if authentication_status:
   placeholder1.empty()
   placeholder2.empty()
 
+  
   # Monkey patch for failed logout
   try:
     authenticator.logout("Logout", "sidebar") 
@@ -50,6 +57,7 @@ if authentication_status:
     st.error(f'Unexpected exception {err}')
     raise Exception(err)  # but not this, let's crash the app
 
+  
   # Display name & widgets in side bar
   st.sidebar.title(f"Welcome {name}")
   
@@ -67,18 +75,14 @@ if authentication_status:
   selected_leagues = f"({','.join(selected_leagues)})"
 
   
+  # Place a refresh button on top of the table to clear the cache
   if st.button('Refresh data', type="primary"):
     st.cache_data.clear()
 
-  
-  
-  
-  
-  
-  
-  
+
   
   data = db_imr.get_log(sports=selected_sports, leagues=selected_leagues, min_diff=float(min_diff) / 100, min_limit=min_limit)
+  st.write(data)
 
   if data:
     
