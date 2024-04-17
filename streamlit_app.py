@@ -92,14 +92,11 @@ if authentication_status:
   
   if data:
     
+    # Convert dictionary to pandas dataframe
     dataframe = pd.DataFrame(data)
 
-    dataframe['stake_home'] = dataframe['stake_home']
-    dataframe['stake_away'] = dataframe['stake_away']
     dataframe['stake_home'][dataframe['stake_home'] < 0] = 0
     dataframe['stake_away'][dataframe['stake_away'] < 0] = 0
-    dataframe['stake_home'] = dataframe['stake_home'].astype(int)
-    dataframe['stake_away'] = dataframe['stake_away'].astype(int)
 
     # Rename and reorder columns
     dataframe = dataframe.rename(columns={'processed': 'PROCESSED', 'event_id': 'EVENTID', 'starts': 'STARTS', 'sport_name': 'SPORT', 'league_name': 'LEAGUE', 'runner_home': 'HOME TEAM', 'runner_away': 'AWAY TEAM', 'line': 'HOME LINE', 'spread_home': 'ODDS HOME', 'spread_away': 'ODDS AWAY', 'spread_home_max': 'LIMIT', 'diff_home': 'DIFF HOME', 'diff_away': 'DIFF AWAY', 'stake_home': 'STAKE HOME', 'stake_away': 'STAKE AWAY', 'timestamp': 'ODDS UPDATED', 'ratings_updated': 'RATINGS UPDATED'})
