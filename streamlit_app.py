@@ -12,33 +12,36 @@ from config import TEXT_LANDING_PAGE
 # Switch to wide-mode for better view
 st.set_page_config(layout="wide")
 
-# Fetch all users from database
+# Fetch all active users from database
 users = db_imr.get_users()
 
+# Create credential lists for authentication
 names = [item['name'] for item in users]
 usernames = [item['username'] for item in users]
 passwords = [item['password'] for item in users]
 
+# Create hashed passwords for secure login
 hashed_passwords = stauth.Hasher(passwords).generate()
-
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'app_home', 'auth', cookie_expiry_days=1)
-
 name, authentication_status, username = authenticator.login("Login", "sidebar")
 
+# Place welcome text on landing page
 placeholder1 = st.empty()
 placeholder2 = st.empty()
-
 placeholder1.title('Implied Market Ratings')
 placeholder2.markdown(TEXT_LANDING_PAGE)
 
+# Display text if authentication fails
 if authentication_status is False:
-  st.error("Username/password is incorrect")
+  st.error("Username/password incorrect or subscription expired.")
 
+# Continue if authentication suceeds
 if authentication_status:
 
   placeholder1.empty()
   placeholder2.empty()
 
+  # Monkey patch for failed logout
   try:
     authenticator.logout("Logout", "sidebar") 
   except KeyError:
@@ -47,24 +50,31 @@ if authentication_status:
     st.error(f'Unexpected exception {err}')
     raise Exception(err)  # but not this, let's crash the app
 
+  # Display name & widgets in side bar
   st.sidebar.title(f"Welcome {name}")
   
-  if st.button('Refresh data', type="primary"):
-    st.cache_data.clear()
-
   min_diff = st.sidebar.slider(label='Min Diff Percentage', min_value=5, max_value=100, value=8, step=1)
-  
   min_limit = st.sidebar.slider(label='Min Limit', min_value=0, max_value=10000, value=0, step=100)
   
-  unique_sports = db_imr.get_sports()
-  selected_sports = st.sidebar.multiselect(label='Sports', options=sorted(unique_sports), default=unique_sports)
-  selected_sports = [f"'{s}'" for s in selected_sports]
-  selected_sports = f"({','.join(selected_sports)})"
+  selected_sports = st.sidebar.multiselect(label='Sports', options=sorted(unique_sports), default=db_imr.get_sports())
+  selected_sports = f"({','.join([f"'{s}'" for s in selected_sports])})"
   
   unique_leagues = db_imr.get_leagues()
   selected_leagues = st.sidebar.multiselect(label='Leagues', options=sorted(unique_leagues), default=unique_leagues)
   selected_leagues = [f"'{s}'" for s in selected_leagues]
   selected_leagues = f"({','.join(selected_leagues)})"
+
+  
+  if st.button('Refresh data', type="primary"):
+    st.cache_data.clear()
+
+  
+  
+  
+  
+  
+  
+  
   
   data = db_imr.get_log(sports=selected_sports, leagues=selected_leagues, min_diff=float(min_diff) / 100, min_limit=min_limit)
 
