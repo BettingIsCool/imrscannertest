@@ -56,7 +56,8 @@ if authentication_status:
   min_diff = st.sidebar.slider(label='Min Diff Percentage', min_value=5, max_value=100, value=8, step=1)
   min_limit = st.sidebar.slider(label='Min Limit', min_value=0, max_value=10000, value=0, step=100)
   
-  selected_sports = st.sidebar.multiselect(label='Sports', options=sorted(unique_sports), default=db_imr.get_sports())
+  unique_sports = db_imr.get_sports()
+  selected_sports = st.sidebar.multiselect(label='Sports', options=sorted(unique_sports), default=unique_sports)
   selected_sports = [f"'{s}'" for s in selected_sports]
   selected_sports = f"({','.join(selected_sports)})"
   
