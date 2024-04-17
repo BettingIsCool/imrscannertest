@@ -118,12 +118,5 @@ if authentication_status:
     
     st.write(edited_dataframe.loc[(edited_dataframe['PROCESSED'] == True), 'EVENTID'])
    
-    st.markdown("""👉 Sort rows by clicking on the column header.""")
-    st.markdown("""👉 Enter 'wide-mode' in the settings (top right) for a more convenient view.""")
-    st.markdown("""👉 I strongly advise to shop for better prices whenever possible. This could easily be the difference between winning and losing!""")
-    st.markdown("""👉 Have realistic expectations. We are up against the sharpest books of the world and I'm not claiming any ridiculous profits. Your long-term ROI will be +3% at best!""")
-    st.markdown("""👉 Betting is a marathon, not a sprint. So take a long-term view and evaluate your bets after a year. Judging your bets too early and you will be fooled by randomness.""")
-    st.markdown("""👉 DIFF HOME/AWAY is the difference in implied probabilities between the current odds and my model's odds (it is NOT the expected ROI). Recommended setting: Min Diff Percentage = 8%""")
-    st.markdown("""👉 Performance will vary on when you place the bets. Generally the earlier the better as opening/early prices are softest. However this will mean you need to deal with smaller limits and prices not widely available. It's up to you to strike the balance between volume and ROI.""")
-    
+    tools.print_advise()
   
