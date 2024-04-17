@@ -36,9 +36,19 @@ def get_processed_bets(username: str):
 
 
 @st.cache_data(ttl=10)
+def delete_processed_bet(username: str, event_id: int):
+
+  query = f"DELETE FROM {TABLE_BETS} WHERE username = '{username}' AND event_id = {event_id}"
+
+  with conn.session as session:
+    session.execute(text(query))
+    session.commit()
+
+
+@st.cache_data(ttl=10)
 def append_processed_bet(username: str, event_id: int):
 
-  query = f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES(:username, :event_id);"
+  query = f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES(:username, :event_id)"
 
   with conn.session as session:
     session.execute(text(query), params = dict(username = username, event_id = event_id))
