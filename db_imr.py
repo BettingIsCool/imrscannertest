@@ -37,4 +37,6 @@ def get_processed_bets(username: str):
 @st.cache_data(ttl=10)
 def append_processed_bet(username: str, event_id: int):
 
+  st.write(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES ('{username}', {event_id})")
+
   return conn.query(f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES ('{username}', {event_id})", ttl=600)
