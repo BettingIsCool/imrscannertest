@@ -25,4 +25,4 @@ def get_leagues():
 @st.cache_data(ttl=10)
 def get_users():
 
-  return conn.query(f"SELECT name, username, password FROM {TABLE_USERS}", ttl=600).to_dict('records')
+  return conn.query(f"SELECT name, username, password FROM {TABLE_USERS} WHERE active = 1", ttl=600).to_dict('records')
