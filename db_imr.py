@@ -1,4 +1,5 @@
 import streamlit as st
+from sqlalchemy import text
 from config import TABLE_LOG, TABLE_USERS, TABLE_BETS
 
 conn = st.connection('imr', type='sql', autocommit = True)
@@ -37,7 +38,10 @@ def get_processed_bets(username: str):
 @st.cache_data(ttl=10)
 def append_processed_bet(username: str, event_id: int):
 
+  query = f"INSERT INTO {TABLE_BETS} (username, event_id) VALUES(:username, :event_id);"
+
   with conn.session as session:
-    session.execute(f"INSERT INTO {TABLE_BETS} (event_id) VALUES (:event_id)", {"event_id": event_id})
+    session.execute(text(query), params = dict(username = username, event_id = event_id))
+    #session.execute('INSERT INTO imr_bets(ID, SENTENCE) VALUES(:id, :sen);', params = dict(username = username, event_id = event_id))
     session.commit()
     
