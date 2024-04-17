@@ -30,5 +30,5 @@ def get_users():
 
 @st.cache_data(ttl=10)
 def get_processed_bets(username: str):
-
+  st.write(f"SELECT event_id FROM {TABLE_BETS} WHERE username = '{username}'")
   return conn.query(f"SELECT event_id FROM {TABLE_BETS} WHERE username = '{username}'", ttl=600).tolist()
